@@ -60,7 +60,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     circular_array = creates_circular_array(len_arr)
+
     intervals_lst = gets_intervals_of_circular_array(
         circular_array, len_intervals)
+
     first_digits = gets_first_digits_of_items_list(intervals_lst)
     print(first_digits)
