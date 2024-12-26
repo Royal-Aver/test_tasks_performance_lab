@@ -1,3 +1,7 @@
+"""
+Программа считывает данные из файла docx
+и заполняет словарь данными их другого словаря.
+"""
 import json
 import sys
 
@@ -7,7 +11,9 @@ from docx import Document
 def converts_doc_file_to_json(doc_file: str, json_file: str):
     """Конвертирует содержимое .docx файла в JSON."""
     doc = Document(doc_file)
-    text = "\n".join(paragraph.text for paragraph in doc.paragraphs if paragraph.text.strip())
+    text = "\n".join(
+        paragraph.text for paragraph
+        in doc.paragraphs if paragraph.text.strip())
 
     data = json.loads(text)
 
@@ -18,6 +24,7 @@ def converts_doc_file_to_json(doc_file: str, json_file: str):
 
 
 def converts_json_to_dict(json_file: str):
+    """Конвертирует содержимое .json файла в dict"""
     with open(json_file, encoding="utf-8") as file:
         data = json.load(file)
         print(f"Файл {json_file} успешно преобразован в словарь")
@@ -25,6 +32,7 @@ def converts_json_to_dict(json_file: str):
 
 
 def create_report_dict(test_dict: dict, values: dict):
+    """Наполняет словарь tests данными из словаря values"""
     for test in test_dict:
         # Обновляем значение текущего теста в tests_dict
         if test['id'] in values:
@@ -38,6 +46,7 @@ def create_report_dict(test_dict: dict, values: dict):
 
 
 def convert_report_dict_to_json(report: dict):
+    """Конвертирует содержимое dict в JSON файл."""
     with open("report.json", "w", encoding="utf-8") as file:
         json.dump(report, file, ensure_ascii=False, indent=4)
 
@@ -67,4 +76,3 @@ if __name__ == "__main__":
     report_dict = create_report_dict(tests_dict["tests"], values_map)
 
     convert_report_dict_to_json(report_dict)
-
