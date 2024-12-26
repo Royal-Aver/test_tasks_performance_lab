@@ -34,11 +34,9 @@ def converts_json_to_dict(json_file: str):
 def create_report_dict(test_dict: dict, values: dict):
     """Наполняет словарь tests данными из словаря values"""
     for test in test_dict:
-        # Обновляем значение текущего теста в tests_dict
         if test['id'] in values:
             test['value'] = values[test['id']]
 
-        # Если есть вложенные тесты, обновляем их
         if 'values' in test:
             create_report_dict(test['values'], values)
 
@@ -47,7 +45,7 @@ def create_report_dict(test_dict: dict, values: dict):
 
 def convert_report_dict_to_json(report: dict):
     """Конвертирует содержимое dict в JSON файл."""
-    with open("report.json", "w", encoding="utf-8") as file:
+    with open("task3/report.json", "w", encoding="utf-8") as file:
         json.dump(report, file, ensure_ascii=False, indent=4)
 
     print("Данные записаны в report.json")
@@ -62,8 +60,8 @@ if __name__ == "__main__":
     tests_doc = sys.argv[2]
     report_json = sys.argv[3]
 
-    values_json = "values.json"
-    tests_json = "tests.json"
+    values_json = "task3/values.json"
+    tests_json = "task3/tests.json"
 
     converts_doc_file_to_json(values_doc, values_json)
     converts_doc_file_to_json(tests_doc, tests_json)
