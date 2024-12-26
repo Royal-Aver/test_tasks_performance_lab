@@ -24,6 +24,26 @@ def converts_json_to_dict(json_file: str):
         return data
 
 
+def create_report_dict(test_dict: dict, values: dict):
+    for test in test_dict:
+        # Обновляем значение текущего теста в tests_dict
+        if test['id'] in values:
+            test['value'] = values[test['id']]
+
+        # Если есть вложенные тесты, обновляем их
+        if 'values' in test:
+            create_report_dict(test['values'], values)
+
+    return test_dict
+
+
+def convert_report_dict_to_json(report: dict):
+    with open("report.json", "w", encoding="utf-8") as file:
+        json.dump(report, file, ensure_ascii=False, indent=4)
+
+    print("Данные записаны в report.json")
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Введите 3 аргумента!")
@@ -41,3 +61,10 @@ if __name__ == "__main__":
 
     values_dict = converts_json_to_dict(values_json)
     tests_dict = converts_json_to_dict(tests_json)
+
+    values_map = {val["id"]: val["value"] for val in values_dict["values"]}
+
+    report_dict = create_report_dict(tests_dict["tests"], values_map)
+
+    convert_report_dict_to_json(report_dict)
+
